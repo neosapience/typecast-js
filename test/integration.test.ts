@@ -10,8 +10,8 @@ describe('TypecastClient Integration', () => {
   beforeEach(() => {
     // Create real client instance without mocking
     client = new TypecastClient({
-        baseHost: process.env.TYPECAST_API_HOST!,
-        apiKey: process.env.TYPECAST_API_KEY!
+      baseHost: process.env.TYPECAST_API_HOST!,
+      apiKey: process.env.TYPECAST_API_KEY!,
     });
   });
 
@@ -19,11 +19,11 @@ describe('TypecastClient Integration', () => {
     const request = {
       text: '안녕하세요',
       character_id: 'default',
-      model: 'ssfm-v2.1'
+      model: 'ssfm-v2.1',
     };
 
     const response = await client.textToSpeech(request);
-    
+
     // Verify the response from real API
     expect(response.format).toBe('wav');
     expect(response.audioData).toBeInstanceOf(Buffer);
@@ -36,6 +36,5 @@ describe('TypecastClient Integration', () => {
 
     // later
     // expect(response.duration).toBeGreaterThan(0);
-
-}, 30000); // Increase timeout to 30 seconds for API call
-}); 
+  }, 30000); // Increase timeout to 30 seconds for API call
+});

@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import { TypecastClient } from '../src/client';
-import fs from 'fs';
 // Load environment variables from .env file
 dotenv.config();
 
@@ -20,7 +19,7 @@ describe('TypecastClient Integration', () => {
     expect(voices).toBeDefined();
     expect(Array.isArray(voices)).toBe(true);
     expect(voices.length).toBeGreaterThan(0);
-    
+
     // Check voice object structure
     const voice = voices[0];
     expect(voice).toHaveProperty('voice_name');

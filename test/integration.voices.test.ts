@@ -8,10 +8,7 @@ describe('TypecastClient Integration', () => {
 
   beforeEach(() => {
     // Create real client instance without mocking
-    client = new TypecastClient({
-      baseHost: process.env.TYPECAST_API_HOST!,
-      apiKey: process.env.TYPECAST_API_KEY!,
-    });
+    client = new TypecastClient();
   });
 
   it('should convert text to speech with real API', async () => {

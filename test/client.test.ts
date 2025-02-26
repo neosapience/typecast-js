@@ -16,7 +16,7 @@ describe('TypecastClient', () => {
     mockedAxios.create.mockReturnValue(mockedAxios);
 
     client = new TypecastClient({
-      baseHost: 'https://api.icepeak.ai',
+      baseHost: 'https://dummy-api.ai',
       apiKey: 'test-api-key',
     });
   });

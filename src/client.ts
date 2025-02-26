@@ -6,12 +6,16 @@ export class TypecastClient {
   private client: AxiosInstance;
   private config: ClientConfig;
 
-  constructor(config: ClientConfig) {
-    this.config = config;
+  constructor(config: Partial<ClientConfig> = {}) {
+    this.config = {
+      baseHost: process.env.TYPECAST_API_HOST || 'https://api.typecast.ai',
+      apiKey: process.env.TYPECAST_API_KEY || '',
+      ...config,
+    };
     this.client = axios.create({
-      baseURL: config.baseHost,
+      baseURL: this.config.baseHost,
       headers: {
-        'X-API-KEY': config.apiKey,
+        'X-API-KEY': this.config.apiKey,
         'Content-Type': 'application/json',
       },
     });

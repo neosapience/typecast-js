@@ -5,10 +5,7 @@ import fs from 'fs';
 dotenv.config();
 
 async function main() {
-  const client = new TypecastClient({
-    baseHost: process.env.TYPECAST_API_HOST!,
-    apiKey: process.env.TYPECAST_API_KEY!
-  });
+  const client = new TypecastClient();
 
   const target_model = 'ssfm-v21';
   const voices = await client.getVoices();

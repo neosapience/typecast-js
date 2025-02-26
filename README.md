@@ -1,6 +1,6 @@
 # Typecast SDK
 
-A Node.js SDK for Typecast API integration.
+A Node.js SDK for Typecast API integration. For comprehensive API documentation and usage guidelines, please visit our [official documentation](https://neosapienceinc.mintlify.app/overview).
 
 ## Installation
 
@@ -21,7 +21,7 @@ const client = new TypecastClient({
 
 // Convert text to speech
 const audio = await client.textToSpeech({
-    text: "Hello there!",
+    text: "Hello there! I'm your friendly text-to-speech agent.",
     model: "ssfm-v21",
     voice_id: "tc_123456789"
 });

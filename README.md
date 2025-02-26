@@ -5,13 +5,13 @@ A Node.js SDK for Typecast API integration.
 ## Installation
 
 ```bash
-npm install typecastsdk
+npm install typecast-sdk
 ```
 
 ## Quick Start
 
 ```typescript
-import { TypecastClient } from 'typecastsdk';
+import { TypecastClient } from 'typecast-sdk';
 import fs from 'fs';
 
 // Initialize client
@@ -22,7 +22,7 @@ const client = new TypecastClient({
 // Convert text to speech
 const audio = await client.textToSpeech({
     text: "Hello there!",
-    model: "ssfm-v20",
+    model: "ssfm-v21",
     voice_id: "tc_123456789"
 });
 

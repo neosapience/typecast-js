@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { ClientConfig, TTSRequest, TTSResponse } from './types';
+import { VoicesResponse } from './types/Voices';
 
 export class TypecastClient {
   private client: AxiosInstance;
@@ -30,5 +31,10 @@ export class TypecastClient {
       duration: Number(response.headers['x-audio-duration'] || 0),
       format: (response.headers['content-type'] || 'audio/wav').split('/')[1],
     };
+  }
+
+  async getVoices(): Promise<VoicesResponse[]> {
+    const response = await this.client.get('/v1/voices');
+    return response.data;
   }
 }

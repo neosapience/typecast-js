@@ -34,8 +34,8 @@ describe('TypecastClient', () => {
 
     const request = {
       text: 'Hello',
-      character_id: 'default',
-      model: 'ssfm-v2.1',
+      voice_id: 'default',
+      model: 'ssfm-v21',
     };
 
     const response = await client.textToSpeech(request);

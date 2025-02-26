@@ -1,4 +1,4 @@
-import { TypecastClient } from 'typecastsdk';
+import { TypecastClient } from 'typecast-sdk';
 import dotenv from 'dotenv';
 import fs from 'fs';
 
@@ -9,10 +9,15 @@ async function main() {
     baseHost: process.env.TYPECAST_API_HOST!,
     apiKey: process.env.TYPECAST_API_KEY!
   });
+
+  const target_model = 'ssfm-v21';
+  const voices = await client.getVoices();
+  const voice = voices.filter((voice) => voice.model === target_model)[0];
+  
   const request = {
     text: "안녕하세요. 오늘은 맑은 날씨입니다.",
-    character_id: "default",
-    model: "ssfm-v2.1"
+    voice_id: voice.voice_id,
+    model: voice.model
   };
   
   try {

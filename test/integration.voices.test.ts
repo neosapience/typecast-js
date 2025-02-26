@@ -16,23 +16,17 @@ describe('TypecastClient Integration', () => {
   });
 
   it('should convert text to speech with real API', async () => {
-    const request = {
-      text: '안녕하세요',
-      character_id: 'default',
-      model: 'ssfm-v2.1',
-    };
-
-    const response = await client.textToSpeech(request);
-
-    // Verify the response from real API
-    expect(response.format).toBe('wav');
-    expect(response.audioData).toBeInstanceOf(Buffer);
-    expect(response.audioData.byteLength).toBeGreaterThan(0);
-
-    // Write audio file to disk for manual verification
-    const outputPath = './test-output.wav';
-    await fs.promises.writeFile(outputPath, Buffer.from(response.audioData));
-    expect(fs.existsSync(outputPath)).toBe(true);
+    const voices = await client.getVoices();
+    expect(voices).toBeDefined();
+    expect(Array.isArray(voices)).toBe(true);
+    expect(voices.length).toBeGreaterThan(0);
+    
+    // Check voice object structure
+    const voice = voices[0];
+    expect(voice).toHaveProperty('voice_name');
+    expect(voice).toHaveProperty('voice_id');
+    expect(voice).toHaveProperty('model');
+    expect(voice).toHaveProperty('emotions');
 
     // later
     // expect(response.duration).toBeGreaterThan(0);

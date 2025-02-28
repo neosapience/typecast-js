@@ -45,13 +45,13 @@ describe('TypecastClient Integration', () => {
   it('should get voices filtered by model', async () => {
     const targetModel = 'ssfm-v21';
     const voices = await client.getVoices(targetModel);
-    
+
     expect(voices).toBeDefined();
     expect(Array.isArray(voices)).toBe(true);
     expect(voices.length).toBeGreaterThan(0);
-    
+
     // Verify all returned voices are from the specified model
-    voices.forEach(voice => {
+    voices.forEach((voice) => {
       expect(voice.model).toBe(targetModel);
     });
   }, 30000);

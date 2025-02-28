@@ -37,8 +37,10 @@ export class TypecastClient {
     };
   }
 
-  async getVoices(): Promise<VoicesResponse[]> {
-    const response = await this.client.get('/v1/voices');
+  async getVoices(model?: string): Promise<VoicesResponse[]> {
+    const response = await this.client.get('/v1/voices', {
+      params: model ? { model } : undefined,
+    });
     return response.data;
   }
 }

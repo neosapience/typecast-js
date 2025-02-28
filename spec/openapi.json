@@ -51,17 +51,37 @@
                 ],
                 "summary": "Get Voices",
                 "operationId": "get_voices_v1_voices_get",
+                "parameters": [
+                    {
+                        "name": "model",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/TTSModel"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful Response",
                         "content": {
                             "application/json": {
                                 "schema": {
+                                    "type": "array",
                                     "items": {
                                         "$ref": "#/components/schemas/Voice"
                                     },
-                                    "type": "array",
                                     "title": "Response Get Voices V1 Voices Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
                                 }
                             }
                         }
@@ -83,8 +103,15 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "format": "ObjectId",
                             "title": "Voice Id"
+                        }
+                    },
+                    {
+                        "name": "model",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/TTSModel"
                         }
                     }
                 ],
@@ -297,7 +324,6 @@
                 "properties": {
                     "voice_id": {
                         "type": "string",
-                        "format": "ObjectId",
                         "title": "Voice Id",
                         "description": "MongoDB ObjectId"
                     },

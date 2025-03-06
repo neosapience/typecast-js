@@ -43,14 +43,14 @@ describe('TypecastClient', () => {
         emotion_preset: 'normal' as const,
         emotion_intensity: 1.0,
         speed: 1.2,
-        intonation: 1
+        intonation: 1,
       },
       output: {
         volume: 100,
         audio_pitch: 0,
         audio_tempo: 1.0,
-        audio_format: 'wav' as const
-      }
+        audio_format: 'wav' as const,
+      },
     };
 
     const response = await client.textToSpeech(request);

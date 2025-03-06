@@ -1,8 +1,11 @@
 {
     "openapi": "3.1.0",
     "info": {
-        "title": "FastAPI",
-        "version": "0.1.0"
+        "title": "Typecast API",
+        "version": "0.1.1",
+        "x-logo": {
+            "url": "https://typecast.ai/_ipx/_/image/logo/tc_logo.webp"
+        }
     },
     "paths": {
         "/v1/text-to-speech": {
@@ -41,7 +44,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
             }
         },
         "/v1/voices": {
@@ -203,6 +211,84 @@
                 "type": "object",
                 "title": "HTTPValidationError"
             },
+            "Output": {
+                "properties": {
+                    "volume": {
+                        "type": "integer",
+                        "maximum": 200.0,
+                        "minimum": 0.0,
+                        "title": "Volume",
+                        "default": 100
+                    },
+                    "audio_pitch": {
+                        "type": "integer",
+                        "maximum": 12.0,
+                        "minimum": -12.0,
+                        "title": "Audio Pitch",
+                        "default": 0
+                    },
+                    "audio_tempo": {
+                        "type": "number",
+                        "maximum": 2.0,
+                        "minimum": 0.5,
+                        "title": "Audio Tempo",
+                        "default": 1.0
+                    },
+                    "audio_format": {
+                        "type": "string",
+                        "enum": [
+                            "wav",
+                            "mp3"
+                        ],
+                        "title": "Audio Format",
+                        "description": "Audio format",
+                        "default": "wav",
+                        "example": "wav"
+                    }
+                },
+                "type": "object",
+                "title": "Output"
+            },
+            "Prompt": {
+                "properties": {
+                    "emotion_preset": {
+                        "type": "string",
+                        "enum": [
+                            "happy",
+                            "sad",
+                            "normal",
+                            "angry"
+                        ],
+                        "title": "Emotion Preset",
+                        "description": "Emotion preset",
+                        "default": "normal",
+                        "example": "normal"
+                    },
+                    "emotion_intensity": {
+                        "type": "number",
+                        "maximum": 2.0,
+                        "minimum": 0.0,
+                        "title": "Emotion Intensity",
+                        "default": 1.0
+                    },
+                    "speed": {
+                        "type": "number",
+                        "maximum": 2.0,
+                        "minimum": 0.5,
+                        "title": "Speed",
+                        "default": 1.0
+                    },
+                    "intonation": {
+                        "type": "integer",
+                        "maximum": 2.0,
+                        "minimum": -2.0,
+                        "title": "Intonation",
+                        "default": 0
+                    }
+                },
+                "type": "object",
+                "title": "Prompt"
+            },
             "TTSModel": {
                 "type": "string",
                 "enum": [
@@ -232,19 +318,6 @@
                         "description": "Voice model name",
                         "example": "ssfm-v20"
                     },
-                    "emotion": {
-                        "type": "string",
-                        "enum": [
-                            "happy",
-                            "sad",
-                            "normal",
-                            "angry"
-                        ],
-                        "title": "Emotion",
-                        "description": "Emotion",
-                        "default": "normal",
-                        "example": "normal"
-                    },
                     "language": {
                         "type": "string",
                         "title": "Language",
@@ -253,26 +326,11 @@
                             "eng"
                         ]
                     },
-                    "tempo": {
-                        "type": "number",
-                        "maximum": 2.0,
-                        "minimum": 0.5,
-                        "title": "Tempo",
-                        "default": 1.0
+                    "prompt": {
+                        "$ref": "#/components/schemas/Prompt"
                     },
-                    "speed": {
-                        "type": "number",
-                        "maximum": 2.0,
-                        "minimum": 0.5,
-                        "title": "Speed",
-                        "default": 1.0
-                    },
-                    "emotion_scale": {
-                        "type": "number",
-                        "maximum": 2.0,
-                        "minimum": 0.0,
-                        "title": "Emotion Scale",
-                        "default": 1.0
+                    "output": {
+                        "$ref": "#/components/schemas/Output"
                     },
                     "seed": {
                         "type": "integer",
@@ -353,6 +411,13 @@
                     "emotions"
                 ],
                 "title": "Voice"
+            }
+        },
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-API-KEY"
             }
         }
     }

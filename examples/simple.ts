@@ -14,7 +14,15 @@ async function main() {
   const request = {
     text: "안녕하세요. 오늘은 맑은 날씨입니다.",
     voice_id: voice.voice_id,
-    model: voice.model
+    model: voice.model as any,
+    prompt: {
+      emotion_preset: 'happy' as const,
+      emotion_intensity: 1.0,
+      speed: 1.0
+    },
+    output: {
+      audio_format: 'wav' as const
+    }
   };
   
   try {

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { TypecastClient } from '../src/client';
+import { TTSModel } from '../src/types/TextToSpeech';
 
 // Mock axios
 jest.mock('axios');
@@ -35,7 +36,21 @@ describe('TypecastClient', () => {
     const request = {
       text: 'Hello',
       voice_id: 'default',
-      model: 'ssfm-v21',
+      model: 'ssfm-v21' as TTSModel,
+      language: 'ko',
+      seed: 12345,
+      prompt: {
+        emotion_preset: 'normal' as const,
+        emotion_intensity: 1.0,
+        speed: 1.2,
+        intonation: 1
+      },
+      output: {
+        volume: 100,
+        audio_pitch: 0,
+        audio_tempo: 1.0,
+        audio_format: 'wav' as const
+      }
     };
 
     const response = await client.textToSpeech(request);

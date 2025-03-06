@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { TypecastClient } from '../src/client';
+import { TTSModel } from '../src/types/TextToSpeech';
 import fs from 'fs';
 // Load environment variables from .env file
 dotenv.config();
@@ -19,7 +20,14 @@ describe('TypecastClient Integration', () => {
     const request = {
       text: '안녕하세요',
       voice_id: voice.voice_id,
-      model: voice.model,
+      model: voice.model as TTSModel,
+      prompt: {
+        emotion_preset: 'normal' as const,
+        speed: 1.0
+      },
+      output: {
+        audio_format: 'wav' as const
+      }
     };
 
     const response = await client.textToSpeech(request);

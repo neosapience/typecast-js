@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import axios from 'axios';
-import { TypecastClient } from '../src/client.js';
-import { TTSModel } from '../src/types/TextToSpeech.js';
+import { TypecastClient } from '../src/client';
+import { TTSModel } from '../src/types/TextToSpeech';
 
 // Mock axios
 vi.mock('axios');

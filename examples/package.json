@@ -1,9 +1,10 @@
 {
     "name": "typecast-sdk-test",
     "version": "1.0.0",
+    "type": "module",
     "private": true,
     "scripts": {
-        "test": "ts-node simple.ts"
+        "test": "node --loader ts-node/esm simple.ts"
     },
     "dependencies": {
       "typecast-sdk": "file:../lib",
@@ -11,6 +12,7 @@
     },
     "devDependencies": {
       "ts-node": "^10.9.1",
-      "typescript": "^5.7.3"
+      "typescript": "^5.7.3",
+      "@types/node": "^20.11.24"
     }
   }

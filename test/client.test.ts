@@ -1,17 +1,18 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import axios from 'axios';
-import { TypecastClient } from '../src/client';
-import { TTSModel } from '../src/types/TextToSpeech';
+import { TypecastClient } from '../src/client.js';
+import { TTSModel } from '../src/types/TextToSpeech.js';
 
 // Mock axios
-jest.mock('axios');
-const mockedAxios = jest.mocked(axios);
+vi.mock('axios');
+const mockedAxios = vi.mocked(axios);
 
 describe('TypecastClient', () => {
   let client: TypecastClient;
 
   beforeEach(() => {
     // Reset mocks before each test
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Setup axios create mock
     mockedAxios.create.mockReturnValue(mockedAxios);

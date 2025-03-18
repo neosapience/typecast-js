@@ -1,6 +1,7 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import dotenv from 'dotenv';
-import { TypecastClient } from '../src/client';
-import { TTSModel } from '../src/types/TextToSpeech';
+import { TypecastClient } from '../src/client.js';
+import { TTSModel } from '../src/types/TextToSpeech.js';
 import fs from 'fs';
 // Load environment variables from .env file
 dotenv.config();

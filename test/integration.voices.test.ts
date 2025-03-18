@@ -1,5 +1,6 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import dotenv from 'dotenv';
-import { TypecastClient } from '../src/client';
+import { TypecastClient } from '../src/client.js';
 // Load environment variables from .env file
 dotenv.config();
 

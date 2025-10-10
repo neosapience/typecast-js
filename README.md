@@ -1,17 +1,22 @@
 # Typecast SDK
 
+[![npm version](https://img.shields.io/npm/v/typecast-ts.svg)](https://www.npmjs.com/package/typecast-ts)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D16.0.0-green.svg)](https://nodejs.org/)
+
 Official TypeScript SDK for [Typecast API](https://typecast.ai) - Text-to-Speech with AI voices.
 
 ## Installation
 
 ```bash
-npm install typecast-sdk
+npm install typecast-ts
 ```
 
 ## Quick Start
 
 ```typescript
-import { TypecastClient } from 'typecast-sdk';
+import { TypecastClient } from 'typecast-ts';
 import fs from 'fs';
 
 // Initialize client with API key
@@ -206,7 +211,7 @@ const japaneseAudio = await client.textToSpeech({
 ### Error Handling
 
 ```typescript
-import { TypecastClient, TypecastAPIError } from 'typecast-sdk';
+import { TypecastClient, TypecastAPIError } from 'typecast-ts';
 
 try {
   const audio = await client.textToSpeech({
@@ -246,7 +251,7 @@ import type {
   LanguageCode,
   Prompt,
   Output
-} from 'typecast-sdk';
+} from 'typecast-ts';
 ```
 
 ## Documentation

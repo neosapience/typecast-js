@@ -5,6 +5,8 @@
       "moduleResolution": "bundler",
       "strict": true,
       "esModuleInterop": true,
+      "declaration": true,
+      "declarationMap": true,
       "types": [
         "vitest/globals"
       ]

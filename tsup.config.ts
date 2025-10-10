@@ -8,4 +8,7 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   outDir: 'lib',
+  minify: false, // Keep readable for debugging, enable for production if needed
+  treeshake: true, // Remove unused code
+  target: 'es2020',
 }); 

@@ -16,7 +16,7 @@ async function main() {
   const voice = voices.filter((voice) => voice.model === target_model)[0];
   
   const request = {
-    text: "안녕하세요. 오늘은 맑은 날씨입니다.",
+    text: "Hello. It's a beautiful day today.",
     voice_id: voice.voice_id,
     model: voice.model as any,
     prompt: {

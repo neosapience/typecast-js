@@ -19,7 +19,7 @@ describe('TypecastClient Integration', () => {
     const voice = voices.filter((voice) => voice.model === 'ssfm-v21')[0];
 
     const request = {
-      text: '안녕하세요',
+      text: 'Hello, how are you?',
       voice_id: voice.voice_id,
       model: voice.model as TTSModel,
       prompt: {

@@ -1,7 +1,10 @@
 {
-  "name": "typecast-sdk",
-  "version": "1.0.0",
+  "name": "typecast-ts",
+  "version": "0.1.2",
   "type": "module",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
       "import": "./lib/index.js",
@@ -9,11 +12,17 @@
       "types": "./lib/index.d.ts"
     }
   },
+  "files": [
+    "lib",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "prepare": "npm run build",
+    "prepublishOnly": "npm run lint && npm test run && npm run build",
     "link:dev": "npm link",
     "clean": "rm -rf lib",
     "lint": "eslint . --ext .ts",
@@ -32,6 +41,9 @@
   "homepage": "https://typecast.ai",
   "bugs": {
     "url": "https://github.com/neosapience/typecast-ts/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.5",

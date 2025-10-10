@@ -1,4 +1,4 @@
-import { TypecastClient } from 'typecast-sdk';
+import { TypecastClient } from 'typecast-ts';
 import dotenv from 'dotenv';
 import fs from 'fs';
 

@@ -11,14 +11,10 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 async function main() {
   const client = new TypecastClient();
 
-  const target_model = 'ssfm-v21';
-  const voices = await client.getVoices();
-  const voice = voices.filter((voice) => voice.model === target_model)[0];
-  
   const request = {
     text: "Hello. It's a beautiful day today.",
-    voice_id: voice.voice_id,
-    model: voice.model as any,
+    voice_id: "tc_62a8975e695ad26f7fb514d1",
+    model: "ssfm-v21" as any,
     prompt: {
       emotion_preset: 'happy' as const,
       emotion_intensity: 1.0,

@@ -1,8 +1,10 @@
 import { TypecastClient } from 'typecast-ts';
 import dotenv from 'dotenv';
 import fs from 'fs';
+import path from 'path';
 
-dotenv.config();
+// Load .env from parent directory
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 async function main() {
   const client = new TypecastClient();

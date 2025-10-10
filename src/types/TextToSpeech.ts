@@ -1,4 +1,4 @@
-export type TTSModel = 'ssfm-v10' | 'ssfm-v12' | 'ssfm-v20' | 'ssfm-v21';
+export type TTSModel = 'ssfm-v21';
 
 export interface Prompt {
   emotion_preset?: 'happy' | 'sad' | 'normal' | 'angry';

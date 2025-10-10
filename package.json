@@ -7,9 +7,9 @@
   "types": "./lib/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "import": "./lib/index.js",
-      "require": "./lib/index.cjs",
-      "types": "./lib/index.d.ts"
+      "require": "./lib/index.cjs"
     }
   },
   "files": [
@@ -22,7 +22,7 @@
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run lint && npm test run && npm run build",
+    "prepublishOnly": "npm run lint && vitest run && npm run build",
     "link:dev": "npm link",
     "clean": "rm -rf lib",
     "lint": "eslint . --ext .ts",

@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import dotenv from 'dotenv';
 import { TypecastClient } from '../src/client.js';
+import { TypecastAPIError } from '../src/errors.js';
 // Load environment variables from .env file
 dotenv.config();
 
@@ -57,12 +58,14 @@ describe('TypecastClient Integration', () => {
     });
   }, 30000);
 
-  it('should return empty array for non-existent model', async () => {
+  it('should throw TypecastAPIError for non-existent model', async () => {
     try {
       await client.getVoices('non-existent-model');
+      // If no error is thrown, fail the test
+      expect.fail('Expected an error to be thrown');
     } catch (error: any) {
-      expect(error.response.status).toBe(422);
-      return;
+      expect(error).toBeInstanceOf(TypecastAPIError);
+      expect(error.statusCode).toBe(422);
     }
   }, 30000);
 });

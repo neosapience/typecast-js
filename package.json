@@ -21,10 +21,18 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\""
   },
-  "keywords": [],
+  "keywords": ["typecast", "tts", "text-to-speech", "ai", "voice", "speech-synthesis", "typescript"],
   "author": "Neosapience <help@typecast.ai>",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
+  "description": "Official TypeScript SDK for Typecast API - Text-to-Speech with AI voices",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neosapience/typecast-ts.git"
+  },
+  "homepage": "https://typecast.ai",
+  "bugs": {
+    "url": "https://github.com/neosapience/typecast-ts/issues"
+  },
   "devDependencies": {
     "@types/node": "^22.13.5",
     "@typescript-eslint/eslint-plugin": "^7.3.1",

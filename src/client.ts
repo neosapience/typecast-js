@@ -1,6 +1,7 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ClientConfig, TTSRequest, TTSResponse } from './types';
 import { VoicesResponse } from './types/Voices';
+import { TypecastAPIError } from './errors';
 
 export class TypecastClient {
   private client: AxiosInstance;
@@ -19,16 +20,27 @@ export class TypecastClient {
         'Content-Type': 'application/json',
       },
     });
+
+    // Add response interceptor for error handling
+    this.client.interceptors.response.use(
+      (response) => response,
+      (error: AxiosError) => {
+        if (error.response) {
+          throw TypecastAPIError.fromResponse(
+            error.response.status,
+            error.response.statusText,
+            error.response.data
+          );
+        }
+        throw error;
+      }
+    );
   }
 
   async textToSpeech(request: TTSRequest): Promise<TTSResponse> {
     const response = await this.client.post('/v1/text-to-speech', request, {
       responseType: 'arraybuffer',
     });
-
-    if (response.status !== 200) {
-      throw new Error(`API request failed: ${response.status}, ${response.statusText}`);
-    }
 
     return {
       audioData: response.data,

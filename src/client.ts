@@ -43,4 +43,11 @@ export class TypecastClient {
     });
     return response.data;
   }
+
+  async getVoiceById(voiceId: string, model?: string): Promise<VoicesResponse[]> {
+    const response = await this.client.get(`/v1/voices/${voiceId}`, {
+      params: model ? { model } : undefined,
+    });
+    return response.data;
+  }
 }

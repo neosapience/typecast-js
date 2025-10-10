@@ -23,7 +23,7 @@
   },
   "keywords": ["typecast", "tts", "text-to-speech", "ai", "voice", "speech-synthesis", "typescript"],
   "author": "Neosapience <help@typecast.ai>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "description": "Official TypeScript SDK for Typecast API - Text-to-Speech with AI voices",
   "repository": {
     "type": "git",

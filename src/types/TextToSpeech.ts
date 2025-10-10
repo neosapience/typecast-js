@@ -126,5 +126,5 @@ export interface TTSResponse {
   /** Audio duration in seconds */
   duration: number;
   /** Audio format (wav or mp3) */
-  format: string;
+  format: 'wav' | 'mp3';
 }

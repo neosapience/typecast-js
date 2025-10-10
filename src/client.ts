@@ -42,10 +42,13 @@ export class TypecastClient {
       responseType: 'arraybuffer',
     });
 
+    const contentType = response.headers['content-type'] || 'audio/wav';
+    const format = contentType.split('/')[1] as 'wav' | 'mp3';
+
     return {
       audioData: response.data,
       duration: Number(response.headers['x-audio-duration'] || 0),
-      format: (response.headers['content-type'] || 'audio/wav').split('/')[1],
+      format,
     };
   }
 

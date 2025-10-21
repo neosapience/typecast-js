@@ -1,11 +1,13 @@
-# Typecast SDK
+# Typecast Node.js SDK
 
 [![npm version](https://img.shields.io/npm/v/typecast-ts.svg)](https://www.npmjs.com/package/typecast-ts)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D16.0.0-green.svg)](https://nodejs.org/)
 
-Official TypeScript SDK for [Typecast API](https://typecast.ai) - Text-to-Speech with AI voices.
+The official Node.js library for the [Typecast API](https://typecast.ai). Convert text to lifelike speech using AI-powered voices.
+
+Works with both JavaScript and TypeScript. TypeScript types included.
 
 ## Installation
 
@@ -14,6 +16,8 @@ npm install typecast-ts
 ```
 
 ## Quick Start
+
+### TypeScript (ESM)
 
 ```typescript
 import { TypecastClient } from 'typecast-ts';
@@ -34,6 +38,30 @@ const audio = await client.textToSpeech({
 // Save audio file
 await fs.promises.writeFile('output.wav', Buffer.from(audio.audioData));
 console.log(`Audio saved! Duration: ${audio.duration}s, Format: ${audio.format}`);
+```
+
+### JavaScript (CommonJS)
+
+```javascript
+const { TypecastClient } = require('typecast-ts');
+const fs = require('fs');
+
+async function main() {
+  const client = new TypecastClient({
+    apiKey: 'YOUR_API_KEY'
+  });
+
+  const audio = await client.textToSpeech({
+    text: "Hello there! I'm your friendly text-to-speech agent.",
+    model: "ssfm-v21",
+    voice_id: "tc_62a8975e695ad26f7fb514d1"
+  });
+
+  await fs.promises.writeFile('output.wav', Buffer.from(audio.audioData));
+  console.log(`Audio saved! Duration: ${audio.duration}s, Format: ${audio.format}`);
+}
+
+main();
 ```
 
 ## Configuration

@@ -21,6 +21,7 @@
     "build": "tsup",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:package": "bash scripts/test-package.sh",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint && vitest run && npm run build",
     "link:dev": "npm link",
@@ -30,10 +31,10 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\""
   },
-  "keywords": ["typecast", "tts", "text-to-speech", "ai", "voice", "speech-synthesis", "typescript"],
+  "keywords": ["typecast", "tts", "text-to-speech", "ai", "voice", "speech-synthesis", "typescript", "nodejs", "javascript", "sdk"],
   "author": "Neosapience <help@typecast.ai>",
   "license": "Apache-2.0",
-  "description": "Official TypeScript SDK for Typecast API - Text-to-Speech with AI voices",
+  "description": "The official Node.js library for the Typecast API. Text-to-Speech with AI voices. TypeScript support included.",
   "repository": {
     "type": "git",
     "url": "https://github.com/neosapience/typecast-ts.git"

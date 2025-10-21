@@ -98,6 +98,10 @@ publish: check version-info
 # Publish with patch version bump (0.1.2 → 0.1.3)
 publish-patch: check
 	@echo "📦 Bumping patch version and publishing..."
+	@if [ -z "$$NPM_TOKEN" ]; then \
+		echo "❌ NPM_TOKEN not set. Please run: export NPM_TOKEN=your_token"; \
+		exit 1; \
+	fi
 	npm version patch -m "chore: release v%s"
 	npm publish --access public
 	@echo ""
@@ -107,6 +111,10 @@ publish-patch: check
 # Publish with minor version bump (0.1.2 → 0.2.0)
 publish-minor: check
 	@echo "📦 Bumping minor version and publishing..."
+	@if [ -z "$$NPM_TOKEN" ]; then \
+		echo "❌ NPM_TOKEN not set. Please run: export NPM_TOKEN=your_token"; \
+		exit 1; \
+	fi
 	npm version minor -m "chore: release v%s"
 	npm publish --access public
 	@echo ""
@@ -116,6 +124,10 @@ publish-minor: check
 # Publish with major version bump (0.1.2 → 1.0.0)
 publish-major: check
 	@echo "📦 Bumping major version and publishing..."
+	@if [ -z "$$NPM_TOKEN" ]; then \
+		echo "❌ NPM_TOKEN not set. Please run: export NPM_TOKEN=your_token"; \
+		exit 1; \
+	fi
 	npm version major -m "chore: release v%s"
 	npm publish --access public
 	@echo ""

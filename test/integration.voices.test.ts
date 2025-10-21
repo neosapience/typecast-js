@@ -63,9 +63,11 @@ describe('TypecastClient Integration', () => {
       await client.getVoices('non-existent-model');
       // If no error is thrown, fail the test
       expect.fail('Expected an error to be thrown');
-    } catch (error: any) {
+    } catch (error: unknown) {
       expect(error).toBeInstanceOf(TypecastAPIError);
-      expect(error.statusCode).toBe(422);
+      if (error instanceof TypecastAPIError) {
+        expect(error.statusCode).toBe(422);
+      }
     }
   }, 30000);
 });

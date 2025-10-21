@@ -1,4 +1,4 @@
-import { TypecastClient } from '@neosapience/typecast-js';
+import { TypecastClient, TTSModel } from '@neosapience/typecast-js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
@@ -14,7 +14,7 @@ async function main() {
   const request = {
     text: "Hello. It's a beautiful day today.",
     voice_id: "tc_62a8975e695ad26f7fb514d1",
-    model: "ssfm-v21" as any,
+    model: "ssfm-v21" as TTSModel,
     prompt: {
       emotion_preset: 'happy' as const,
       emotion_intensity: 1.0,

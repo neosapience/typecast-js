@@ -1,8 +1,10 @@
+import { ApiErrorResponse } from './types';
+
 export class TypecastAPIError extends Error {
   public readonly statusCode: number;
-  public readonly response?: any;
+  public readonly response?: ApiErrorResponse;
 
-  constructor(message: string, statusCode: number, response?: any) {
+  constructor(message: string, statusCode: number, response?: ApiErrorResponse) {
     super(message);
     this.name = 'TypecastAPIError';
     this.statusCode = statusCode;
@@ -14,7 +16,7 @@ export class TypecastAPIError extends Error {
     }
   }
 
-  static fromResponse(statusCode: number, statusText: string, data?: any): TypecastAPIError {
+  static fromResponse(statusCode: number, statusText: string, data?: ApiErrorResponse): TypecastAPIError {
     let message: string;
 
     switch (statusCode) {
@@ -41,7 +43,10 @@ export class TypecastAPIError extends Error {
     }
 
     if (data?.detail) {
-      message += ` - ${JSON.stringify(data.detail)}`;
+      const detailStr = typeof data.detail === 'string' 
+        ? data.detail 
+        : JSON.stringify(data.detail);
+      message += ` - ${detailStr}`;
     }
 
     return new TypecastAPIError(message, statusCode, data);

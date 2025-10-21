@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { ClientConfig, TTSRequest, TTSResponse } from './types';
+import { ClientConfig, TTSRequest, TTSResponse, ApiErrorResponse } from './types';
 import { VoicesResponse } from './types/Voices';
 import { TypecastAPIError } from './errors';
 
@@ -24,7 +24,7 @@ export class TypecastClient {
     // Add response interceptor for error handling
     this.client.interceptors.response.use(
       (response) => response,
-      (error: AxiosError) => {
+      (error: AxiosError<ApiErrorResponse>) => {
         if (error.response) {
           throw TypecastAPIError.fromResponse(
             error.response.status,
@@ -38,29 +38,33 @@ export class TypecastClient {
   }
 
   async textToSpeech(request: TTSRequest): Promise<TTSResponse> {
-    const response = await this.client.post('/v1/text-to-speech', request, {
+    const response = await this.client.post<ArrayBuffer>('/v1/text-to-speech', request, {
       responseType: 'arraybuffer',
     });
 
-    const contentType = response.headers['content-type'] || 'audio/wav';
-    const format = contentType.split('/')[1] as 'wav' | 'mp3';
+    const contentType = String(response.headers['content-type'] || 'audio/wav');
+    const formatFromHeader = contentType.split('/')[1] || 'wav';
+    const format: 'wav' | 'mp3' = formatFromHeader === 'mp3' ? 'mp3' : 'wav';
+
+    const durationHeader: unknown = response.headers['x-audio-duration'];
+    const duration = typeof durationHeader === 'string' ? Number(durationHeader) : 0;
 
     return {
       audioData: response.data,
-      duration: Number(response.headers['x-audio-duration'] || 0),
+      duration,
       format,
     };
   }
 
   async getVoices(model?: string): Promise<VoicesResponse[]> {
-    const response = await this.client.get('/v1/voices', {
+    const response = await this.client.get<VoicesResponse[]>('/v1/voices', {
       params: model ? { model } : undefined,
     });
     return response.data;
   }
 
   async getVoiceById(voiceId: string, model?: string): Promise<VoicesResponse[]> {
-    const response = await this.client.get(`/v1/voices/${voiceId}`, {
+    const response = await this.client.get<VoicesResponse[]>(`/v1/voices/${voiceId}`, {
       params: model ? { model } : undefined,
     });
     return response.data;

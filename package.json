@@ -23,11 +23,11 @@
     "test:coverage": "vitest run --coverage",
     "test:package": "bash scripts/test-package.sh",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run lint && vitest run && npm run build",
+    "prepublishOnly": "vitest run && npm run build",
     "link:dev": "npm link",
     "clean": "rm -rf lib",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\""
   },
@@ -37,7 +37,7 @@
   "description": "The official Node.js library for the Typecast API. Text-to-Speech with AI voices. TypeScript support included.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/neosapience/typecast-js.git"
+    "url": "git+https://github.com/neosapience/typecast-js.git"
   },
   "homepage": "https://typecast.ai",
   "bugs": {

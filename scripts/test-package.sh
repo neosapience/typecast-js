@@ -12,13 +12,13 @@ TEST_DIR=$(mktemp -d)
 cd $TEST_DIR
 
 echo "📥 Installing package from tarball..."
-TARBALL=$(ls $OLDPWD/typecast-ts-*.tgz | head -1)
+TARBALL=$(ls $OLDPWD/neosapience-typecast-js-*.tgz | head -1)
 npm init -y
 npm install "$TARBALL"
 
 echo "✅ Testing CommonJS..."
 cat > test-cjs.js << 'EOF'
-const { TypecastClient } = require('typecast-ts');
+const { TypecastClient } = require('@neosapience/typecast-js');
 console.log('✓ CommonJS import works');
 console.log('✓ TypecastClient:', typeof TypecastClient);
 if (typeof TypecastClient !== 'function') {
@@ -30,7 +30,7 @@ node test-cjs.js
 
 echo "✅ Testing ESM..."
 cat > test-esm.mjs << 'EOF'
-import { TypecastClient } from 'typecast-ts';
+import { TypecastClient } from '@neosapience/typecast-js';
 console.log('✓ ESM import works');
 console.log('✓ TypecastClient:', typeof TypecastClient);
 if (typeof TypecastClient !== 'function') {
@@ -43,7 +43,7 @@ node test-esm.mjs
 echo "✅ Testing TypeScript..."
 npm install -D typescript @types/node
 cat > test-ts.ts << 'EOF'
-import { TypecastClient, TTSRequest } from 'typecast-ts';
+import { TypecastClient, TTSRequest } from '@neosapience/typecast-js';
 const client = new TypecastClient({ apiKey: 'test' });
 console.log('✓ TypeScript import works');
 console.log('✓ TypeScript types available');

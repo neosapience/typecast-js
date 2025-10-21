@@ -1,6 +1,6 @@
 # Typecast Node.js SDK
 
-[![npm version](https://img.shields.io/npm/v/typecast-ts.svg)](https://www.npmjs.com/package/typecast-ts)
+[![npm version](https://img.shields.io/npm/v/@neosapience/typecast-js.svg)](https://www.npmjs.com/package/@neosapience/typecast-js)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D16.0.0-green.svg)](https://nodejs.org/)
@@ -12,7 +12,7 @@ Works with both JavaScript and TypeScript. TypeScript types included.
 ## Installation
 
 ```bash
-npm install typecast-ts
+npm install @neosapience/typecast-js
 ```
 
 ## Quick Start
@@ -20,7 +20,7 @@ npm install typecast-ts
 ### TypeScript (ESM)
 
 ```typescript
-import { TypecastClient } from 'typecast-ts';
+import { TypecastClient } from '@neosapience/typecast-js';
 import fs from 'fs';
 
 // Initialize client with API key
@@ -43,7 +43,7 @@ console.log(`Audio saved! Duration: ${audio.duration}s, Format: ${audio.format}`
 ### JavaScript (CommonJS)
 
 ```javascript
-const { TypecastClient } = require('typecast-ts');
+const { TypecastClient } = require('@neosapience/typecast-js');
 const fs = require('fs');
 
 async function main() {
@@ -239,7 +239,7 @@ const japaneseAudio = await client.textToSpeech({
 ### Error Handling
 
 ```typescript
-import { TypecastClient, TypecastAPIError } from 'typecast-ts';
+import { TypecastClient, TypecastAPIError } from '@neosapience/typecast-js';
 
 try {
   const audio = await client.textToSpeech({
@@ -279,7 +279,7 @@ import type {
   LanguageCode,
   Prompt,
   Output
-} from 'typecast-ts';
+} from '@neosapience/typecast-js';
 ```
 
 ## Documentation

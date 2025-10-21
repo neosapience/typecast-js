@@ -1,4 +1,4 @@
-import { TypecastClient } from 'typecast-ts';
+import { TypecastClient } from '@neosapience/typecast-js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';

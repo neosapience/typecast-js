@@ -17,11 +17,11 @@ async function main() {
     model: "ssfm-v21" as TTSModel,
     prompt: {
       emotion_preset: 'happy' as const,
-      emotion_intensity: 1.0,
-      speed: 1.0
+      emotion_intensity: 1.0
     },
     output: {
-      audio_format: 'wav' as const
+      audio_format: 'wav' as const,
+      audio_tempo: 1.0
     }
   };
   

@@ -116,8 +116,6 @@ const response = await client.textToSpeech({
 - **prompt** (optional): Emotion and style settings
   - `emotion_preset`: `'happy' | 'sad' | 'normal' | 'angry'` (default: `'normal'`)
   - `emotion_intensity`: 0.0 - 2.0 (default: 1.0)
-  - `speed`: 0.5 - 2.0 (default: 1.0)
-  - `intonation`: -2 - 2 (default: 0)
 - **output** (optional): Audio output settings
   - `audio_format`: `'wav' | 'mp3'` (default: `'wav'`)
   - `volume`: 0 - 200 (default: 100)
@@ -181,8 +179,10 @@ const happyAudio = await client.textToSpeech({
   model: "ssfm-v21",
   prompt: {
     emotion_preset: "happy",
-    emotion_intensity: 1.8,
-    speed: 1.2
+    emotion_intensity: 1.8
+  },
+  output: {
+    audio_tempo: 1.2
   }
 });
 
@@ -193,8 +193,10 @@ const calmAudio = await client.textToSpeech({
   model: "ssfm-v21",
   prompt: {
     emotion_preset: "normal",
-    emotion_intensity: 0.8,
-    speed: 0.9
+    emotion_intensity: 0.8
+  },
+  output: {
+    audio_tempo: 0.9
   }
 });
 ```

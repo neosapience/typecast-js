@@ -24,10 +24,11 @@ describe('TypecastClient Integration', () => {
       model: voice.model as TTSModel,
       prompt: {
         emotion_preset: 'normal' as const,
-        speed: 1.0,
+        emotion_intensity: 1.0
       },
       output: {
         audio_format: 'wav' as const,
+        audio_tempo: 1.0
       },
     };
 

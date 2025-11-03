@@ -46,20 +46,6 @@ export interface Prompt {
    * @default 1.0
    */
   emotion_intensity?: number;
-  /** 
-   * Speech speed
-   * @min 0.5
-   * @max 2.0
-   * @default 1.0
-   */
-  speed?: number;
-  /** 
-   * Intonation adjustment
-   * @min -2
-   * @max 2
-   * @default 0
-   */
-  intonation?: number;
 }
 
 /**

@@ -42,9 +42,7 @@ describe('TypecastClient', () => {
       seed: 12345,
       prompt: {
         emotion_preset: 'normal' as const,
-        emotion_intensity: 1.0,
-        speed: 1.2,
-        intonation: 1,
+        emotion_intensity: 1.0
       },
       output: {
         volume: 100,

@@ -59,105 +59,98 @@ async function main() {
 main();
 ```
 
+## Features
+
+- 🎙️ **Multiple Voice Models**: Support for AI voice models with natural speech synthesis
+- 🌍 **Multi-language Support**: 27+ languages including English, Korean, Spanish, Japanese, Chinese, and more
+- 😊 **Emotion Control**: Adjust emotional expression (happy, sad, angry, normal, tonemid, toneup) with intensity control
+- 🎚️ **Audio Customization**: Control volume (0-200), pitch (-12 to +12 semitones), tempo (0.5x to 2.0x), and format (WAV/MP3)
+- 🔍 **Voice Discovery**: List and search available voices by model
+- 📝 **TypeScript Support**: Full type definitions included
+
 ## Configuration
 
-The client can be configured using environment variables or constructor options:
+Set your API key via environment variable or constructor:
 
 ```typescript
-// Using environment variables
-// export TYPECAST_API_KEY=your_api_key
+// Using environment variable
+// export TYPECAST_API_KEY="your-api-key-here"
 const client = new TypecastClient({
   apiKey: process.env.TYPECAST_API_KEY!
 });
 
-// Or pass API key directly
+// Or pass directly
 const client = new TypecastClient({
-  apiKey: 'your_api_key'
+  apiKey: 'your-api-key-here'
 });
 ```
 
-## API Reference
+## Advanced Usage
 
-### Text-to-Speech
+### Emotion and Audio Control
 
-Generate speech from text using a specified voice model.
+Control emotion, volume, pitch, tempo, and output format:
 
 ```typescript
-const response = await client.textToSpeech({
-  text: "Hello. How are you?",
+const audio = await client.textToSpeech({
+  text: "I am so excited to show you these features!",
   voice_id: "tc_62a8975e695ad26f7fb514d1",
   model: "ssfm-v21",
-  language: "eng", // optional, auto-detected if not provided
+  language: "eng",
   prompt: {
-    emotion_preset: "happy",
-    emotion_intensity: 1.5
+    emotion_preset: "happy",      // Options: normal, happy, sad, angry, tonemid, toneup
+    emotion_intensity: 1.5        // Range: 0.0 to 2.0
   },
   output: {
-    audio_format: "mp3",
-    volume: 100,
-    audio_pitch: 0,
-    audio_tempo: 1.0
+    volume: 120,                  // Range: 0 to 200
+    audio_pitch: 2,               // Range: -12 to +12 semitones
+    audio_tempo: 1.2,             // Range: 0.5x to 2.0x
+    audio_format: "mp3"           // Options: wav, mp3
   },
-  seed: 42 // for reproducible results
+  seed: 42                        // For reproducible results
 });
+
+await fs.promises.writeFile(`output.${audio.format}`, Buffer.from(audio.audioData));
+console.log(`Duration: ${audio.duration}s, Format: ${audio.format}`);
 ```
 
-#### Parameters
+### Voice Discovery
 
-- **text** (required): Text to convert to speech (max 5000 characters)
-- **voice_id** (required): Voice ID (format: `tc_*` for Typecast voices, `uc_*` for user-created voices)
-- **model** (required): Voice model (`ssfm-v21`)
-- **language** (optional): Language code (see supported languages below)
-- **prompt** (optional): Emotion and style settings
-  - `emotion_preset`: Emotion type for the voice. Available options include `'happy' | 'sad' | 'normal' | 'angry' | 'tonemid' | 'toneup'` (default: `'normal'`). Note: Each voice supports different emotions - check the voice's `emotions` array using `getVoices()` to see which emotions are supported.
-  - `emotion_intensity`: 0.0 - 2.0 (default: 1.0)
-- **output** (optional): Audio output settings
-  - `audio_format`: `'wav' | 'mp3'` (default: `'wav'`)
-  - `volume`: 0 - 200 (default: 100)
-  - `audio_pitch`: -12 - 12 semitones (default: 0)
-  - `audio_tempo`: 0.5 - 2.0 (default: 1.0)
-- **seed** (optional): Random seed for reproducible results
-
-### Get Voices
-
-List all available voices, optionally filtered by model.
-
-**Signature:** `getVoices(model?: string): Promise<Voice[]>`
+List and search available voices:
 
 ```typescript
-// Get all voices
+// List all voices
 const voices = await client.getVoices();
 
-// Get voices for specific model
-const voices = await client.getVoices("ssfm-v21");
+// Filter by model
+const v21Voices = await client.getVoices("ssfm-v21");
 
-voices.forEach(voice => {
-  console.log(`${voice.voice_name} (${voice.voice_id})`);
-  console.log(`Emotions: ${voice.emotions.join(', ')}`);
-});
-```
-
-For detailed Voice object fields, see the [API Reference](https://typecast.ai/docs/api-reference).
-
-### Get Voice by ID
-
-Get information about a specific voice.
-
-**Signature:** `getVoiceById(voiceId: string, model?: string): Promise<Voice[]>`
-
-```typescript
+// Get specific voice
 const voiceInfo = await client.getVoiceById("tc_62a8975e695ad26f7fb514d1");
 console.log(`Voice: ${voiceInfo[0].voice_name}`);
-console.log(`Model: ${voiceInfo[0].model}`);
-console.log(`Supported emotions: ${voiceInfo[0].emotions.join(', ')}`);
+console.log(`Available emotions: ${voiceInfo[0].emotions.join(', ')}`);
 ```
 
-**Voice Object Fields:**
-- `voice_id`: Unique identifier (format: `tc_*` or `uc_*`)
-- `voice_name`: Human-readable name of the voice
-- `model`: Voice model type (`ssfm-v21`)
-- `emotions`: Array of supported emotion presets for this voice
+### Multilingual Content
 
+The SDK supports 27+ languages with automatic language detection:
+
+```typescript
+// Auto-detect language (recommended)
+const audio = await client.textToSpeech({
+  text: "こんにちは。お元気ですか。",
+  voice_id: "tc_62a8975e695ad26f7fb514d1",
+  model: "ssfm-v21"
+});
+
+// Or specify language explicitly
+const koreanAudio = await client.textToSpeech({
+  text: "안녕하세요. 반갑습니다.",
+  voice_id: "tc_62a8975e695ad26f7fb514d1",
+  model: "ssfm-v21",
+  language: "kor"  // ISO 639-3 language code
+});
+```
 ## Supported Languages
 
 The SDK supports 27 languages with automatic language detection:
@@ -176,146 +169,39 @@ The SDK supports 27 languages with automatic language detection:
 
 If not specified, the language will be automatically detected from the input text.
 
-## Advanced Examples
+## Error Handling
 
-### Working with Voice Emotions
-
-Each voice supports different emotion presets. Check which emotions a voice supports before using them:
-
-```typescript
-// Get voice information
-const voices = await client.getVoices("ssfm-v21");
-const myVoice = voices.find(v => v.voice_id === "tc_62a8975e695ad26f7fb514d1");
-
-console.log(`${myVoice.voice_name} supports: ${myVoice.emotions.join(', ')}`);
-// Example output: "Olivia supports: tonemid, toneup, normal, happy, sad, angry"
-
-// Use a supported emotion
-if (myVoice.emotions.includes('happy')) {
-  const audio = await client.textToSpeech({
-    text: "This voice supports the happy emotion!",
-    voice_id: myVoice.voice_id,
-    model: "ssfm-v21",
-    prompt: {
-      emotion_preset: "happy",
-      emotion_intensity: 1.5
-    }
-  });
-  // Save: await fs.promises.writeFile(`happy.${audio.format}`, Buffer.from(audio.audioData));
-}
-```
-
-### Emotion Control
-
-```typescript
-// Happy and energetic voice
-const happyAudio = await client.textToSpeech({
-  text: "Great to see you!",
-  voice_id: "tc_62a8975e695ad26f7fb514d1",
-  model: "ssfm-v21",
-  prompt: {
-    emotion_preset: "happy",
-    emotion_intensity: 1.8
-  },
-  output: {
-    audio_tempo: 1.2
-  }
-});
-// Save: await fs.promises.writeFile(`happy.${happyAudio.format}`, Buffer.from(happyAudio.audioData));
-
-// Calm and professional voice
-const calmAudio = await client.textToSpeech({
-  text: "Welcome to our presentation.",
-  voice_id: "tc_62a8975e695ad26f7fb514d1",
-  model: "ssfm-v21",
-  prompt: {
-    emotion_preset: "normal",
-    emotion_intensity: 0.8
-  },
-  output: {
-    audio_tempo: 0.9
-  }
-});
-// Save: await fs.promises.writeFile(`calm.${calmAudio.format}`, Buffer.from(calmAudio.audioData));
-```
-
-### Audio Customization
-
-```typescript
-// Generate louder audio with higher pitch
-const customAudio = await client.textToSpeech({
-  text: "This is a test with custom settings.",
-  voice_id: "tc_62a8975e695ad26f7fb514d1",
-  model: "ssfm-v21",
-  output: {
-    volume: 150,
-    audio_pitch: 3,
-    audio_tempo: 1.1,
-    audio_format: "mp3"
-  }
-});
-// Save: await fs.promises.writeFile(`custom.${customAudio.format}`, Buffer.from(customAudio.audioData));
-```
-
-### Multilingual Content
-
-```typescript
-// Korean text
-const koreanAudio = await client.textToSpeech({
-  text: "안녕하세요. 반갑습니다.",
-  voice_id: "tc_62a8975e695ad26f7fb514d1",
-  model: "ssfm-v21",
-  language: "kor"
-});
-// Save: await fs.promises.writeFile(`korean.${koreanAudio.format}`, Buffer.from(koreanAudio.audioData));
-
-// Japanese text
-const japaneseAudio = await client.textToSpeech({
-  text: "こんにちは。お元気ですか。",
-  voice_id: "tc_62a8975e695ad26f7fb514d1",
-  model: "ssfm-v21",
-  language: "jpn"
-});
-// Save: await fs.promises.writeFile(`japanese.${japaneseAudio.format}`, Buffer.from(japaneseAudio.audioData));
-```
-
-### Error Handling
+The SDK provides `TypecastAPIError` for handling API errors:
 
 ```typescript
 import { TypecastClient, TypecastAPIError } from '@neosapience/typecast-js';
 
-async function main() {
-  const client = new TypecastClient({ apiKey: 'YOUR_API_KEY' });
-
-  try {
-    const audio = await client.textToSpeech({
-      text: "Hello world",
-      voice_id: "tc_62a8975e695ad26f7fb514d1",
-      model: "ssfm-v21"
-    });
-  } catch (error) {
-    if (error instanceof TypecastAPIError) {
-      // TypecastAPIError exposes: statusCode (number), message (string), response (unknown)
-      switch (error.statusCode) {
-        case 401:
-          console.error('Invalid API key');
-          break;
-        case 402:
-          console.error('Insufficient credits');
-          break;
-        case 422:
-          console.error('Validation error:', error.response);
-          break;
-        default:
-          console.error(`API error (${error.statusCode}):`, error.message);
-      }
-    } else {
-      console.error('Unexpected error:', error);
+try {
+  const audio = await client.textToSpeech({
+    text: "Hello world",
+    voice_id: "tc_62a8975e695ad26f7fb514d1",
+    model: "ssfm-v21"
+  });
+} catch (error) {
+  if (error instanceof TypecastAPIError) {
+    // TypecastAPIError exposes: statusCode, message, response
+    switch (error.statusCode) {
+      case 401:
+        console.error('Invalid API key');
+        break;
+      case 402:
+        console.error('Insufficient credits');
+        break;
+      case 422:
+        console.error('Validation error:', error.response);
+        break;
+      default:
+        console.error(`API error (${error.statusCode}):`, error.message);
     }
+  } else {
+    console.error('Unexpected error:', error);
   }
 }
-
-main();
 ```
 
 ## TypeScript Support

@@ -38,7 +38,7 @@ export type LanguageCode =
  */
 export interface Prompt {
   /** Emotion preset for the voice (default: 'normal') */
-  emotion_preset?: 'happy' | 'sad' | 'normal' | 'angry';
+  emotion_preset?: 'happy' | 'sad' | 'normal' | 'angry' | 'tonemid' | 'toneup';
   /** 
    * Emotion intensity
    * @min 0.0

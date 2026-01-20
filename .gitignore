@@ -40,4 +40,5 @@ yarn-error.log*
 
 # Optional test output files
 *.wav
+*.mp3
 .npmrc

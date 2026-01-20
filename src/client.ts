@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ClientConfig, TTSRequest, TTSResponse, ApiErrorResponse } from './types';
-import { VoicesResponse } from './types/Voices';
+import { VoicesResponse, VoiceV2Response, VoicesV2Filter } from './types/Voices';
 import { TypecastAPIError } from './errors';
 
 export class TypecastClient {
@@ -66,6 +66,18 @@ export class TypecastClient {
   async getVoiceById(voiceId: string, model?: string): Promise<VoicesResponse[]> {
     const response = await this.client.get<VoicesResponse[]>(`/v1/voices/${voiceId}`, {
       params: model ? { model } : undefined,
+    });
+    return response.data;
+  }
+
+  /**
+   * Get voices with enhanced metadata (V2 API)
+   * Returns voices with model-grouped emotions and additional metadata
+   * @param filter - Optional filter options (model, gender, age, use_cases)
+   */
+  async getVoicesV2(filter?: VoicesV2Filter): Promise<VoiceV2Response[]> {
+    const response = await this.client.get<VoiceV2Response[]>('/v2/voices', {
+      params: filter,
     });
     return response.data;
   }

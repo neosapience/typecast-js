@@ -61,11 +61,11 @@ main();
 
 ## Features
 
-- 🎙️ **Multiple Voice Models**: Support for AI voice models with natural speech synthesis
-- 🌍 **Multi-language Support**: 27+ languages including English, Korean, Spanish, Japanese, Chinese, and more
-- 😊 **Emotion Control**: Adjust emotional expression (happy, sad, angry, normal, tonemid, toneup) with intensity control
+- 🎙️ **Multiple Voice Models**: Support for ssfm-v21 and ssfm-v30 AI voice models
+- 🌍 **Multi-language Support**: 37 languages including English, Korean, Spanish, Japanese, Chinese, and more
+- 😊 **Emotion Control**: Preset emotions (happy, sad, angry, whisper, toneup, tonedown) or smart context-aware inference
 - 🎚️ **Audio Customization**: Control volume (0-200), pitch (-12 to +12 semitones), tempo (0.5x to 2.0x), and format (WAV/MP3)
-- 🔍 **Voice Discovery**: List and search available voices by model
+- 🔍 **Voice Discovery**: V2 API with filtering by model, gender, age, and use cases
 - 📝 **TypeScript Support**: Full type definitions included
 
 ## Configuration
@@ -119,16 +119,65 @@ console.log(`Duration: ${audio.duration}s, Format: ${audio.format}`);
 List and search available voices:
 
 ```typescript
-// List all voices
-const voices = await client.getVoices();
+// V2 API (recommended) - Enhanced metadata with filtering
+const voices = await client.getVoicesV2();
 
-// Filter by model
+// Filter by model, gender, age, or use case
+const filteredVoices = await client.getVoicesV2({
+  model: 'ssfm-v30',
+  gender: 'female',
+  age: 'young_adult'
+});
+
+// Each voice shows supported models and emotions
+console.log(`Voice: ${voices[0].voice_name}`);
+console.log(`Gender: ${voices[0].gender}, Age: ${voices[0].age}`);
+console.log(`Models: ${voices[0].models.map(m => m.version).join(', ')}`);
+
+// V1 API (legacy)
 const v21Voices = await client.getVoices("ssfm-v21");
+```
 
-// Get specific voice
-const voiceInfo = await client.getVoiceById("tc_62a8975e695ad26f7fb514d1");
-console.log(`Voice: ${voiceInfo[0].voice_name}`);
-console.log(`Available emotions: ${voiceInfo[0].emotions.join(', ')}`);
+### ssfm-v30 Model Features
+
+The ssfm-v30 model offers enhanced emotion control with two modes:
+
+#### Preset Emotion Control
+
+```typescript
+import { PresetPrompt } from '@neosapience/typecast-js';
+
+const audio = await client.textToSpeech({
+  text: "I'm so happy to meet you!",
+  voice_id: "tc_672c5f5ce59fac2a48faeaee",
+  model: "ssfm-v30",
+  language: "eng",
+  prompt: {
+    emotion_type: "preset",
+    emotion_preset: "happy",     // normal, happy, sad, angry, whisper, toneup, tonedown
+    emotion_intensity: 1.5
+  } as PresetPrompt
+});
+```
+
+#### Smart Context-Aware Emotion
+
+Let the AI infer emotion from surrounding context:
+
+```typescript
+import { SmartPrompt } from '@neosapience/typecast-js';
+
+const audio = await client.textToSpeech({
+  text: "Everything is so incredibly perfect.",
+  voice_id: "tc_672c5f5ce59fac2a48faeaee",
+  model: "ssfm-v30",
+  language: "eng",
+  prompt: {
+    emotion_type: "smart",
+    previous_text: "I just got the best news ever!",
+    next_text: "I cannot wait to share this with everyone!"
+  } as SmartPrompt
+});
 ```
 
 ### Multilingual Content
@@ -153,7 +202,7 @@ const koreanAudio = await client.textToSpeech({
 ```
 ## Supported Languages
 
-The SDK supports 27 languages with automatic language detection:
+The SDK supports 37 languages with automatic language detection:
 
 | Code | Language   | Code | Language   | Code | Language   |
 |------|------------|------|------------|------|------------|
@@ -166,6 +215,10 @@ The SDK supports 27 languages with automatic language detection:
 | pol  | Polish     | slk  | Slovak     | por  | Portuguese |
 | nld  | Dutch      | ara  | Arabic     | bul  | Bulgarian  |
 | rus  | Russian    | hrv  | Croatian   | ron  | Romanian   |
+| ben  | Bengali    | hin  | Hindi      | hun  | Hungarian  |
+| nan  | Hokkien    | nor  | Norwegian  | pan  | Punjabi    |
+| tha  | Thai       | tur  | Turkish    | vie  | Vietnamese |
+| yue  | Cantonese  |      |            |      |            |
 
 If not specified, the language will be automatically detected from the input text.
 

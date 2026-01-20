@@ -37,6 +37,11 @@ export class TypecastClient {
     );
   }
 
+  /**
+   * Convert text to speech
+   * @param request - TTS request parameters including text, voice_id, model, and optional settings
+   * @returns TTSResponse containing audio data, duration, and format
+   */
   async textToSpeech(request: TTSRequest): Promise<TTSResponse> {
     const response = await this.client.post<ArrayBuffer>('/v1/text-to-speech', request, {
       responseType: 'arraybuffer',
@@ -56,6 +61,12 @@ export class TypecastClient {
     };
   }
 
+  /**
+   * Get available voices (V1 API)
+   * @param model - Optional model filter (e.g., 'ssfm-v21', 'ssfm-v30')
+   * @returns List of available voices with their emotions
+   * @deprecated Use getVoicesV2() for enhanced metadata and filtering options
+   */
   async getVoices(model?: string): Promise<VoicesResponse[]> {
     const response = await this.client.get<VoicesResponse[]>('/v1/voices', {
       params: model ? { model } : undefined,
@@ -63,6 +74,13 @@ export class TypecastClient {
     return response.data;
   }
 
+  /**
+   * Get voice by ID (V1 API)
+   * @param voiceId - The voice ID (e.g., 'tc_62a8975e695ad26f7fb514d1')
+   * @param model - Optional model filter
+   * @returns Voice information including available emotions
+   * @deprecated Use getVoicesV2() for enhanced metadata
+   */
   async getVoiceById(voiceId: string, model?: string): Promise<VoicesResponse[]> {
     const response = await this.client.get<VoicesResponse[]>(`/v1/voices/${voiceId}`, {
       params: model ? { model } : undefined,

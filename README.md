@@ -9,12 +9,29 @@ The official Node.js library for the [Typecast API](https://typecast.ai). Conver
 
 Works with both JavaScript and TypeScript. Full TypeScript types included.
 
-ESM & CommonJS supported. This SDK targets Node.js environments only (browser usage is not supported).
+ESM & CommonJS supported. Works in Node.js and browser environments.
 
 ## Installation
 
 ```bash
 npm install @neosapience/typecast-js
+```
+
+### Node.js 16/17 Users
+
+This SDK uses the native `fetch` API. Node.js 18+ has built-in fetch support, but if you're using Node.js 16 or 17, you need to install a fetch polyfill:
+
+```bash
+npm install isomorphic-fetch
+```
+
+Then import it once at your application's entry point (before using the SDK):
+
+```javascript
+// At the top of your main file
+import 'isomorphic-fetch';
+// or for CommonJS
+require('isomorphic-fetch');
 ```
 
 ## Quick Start

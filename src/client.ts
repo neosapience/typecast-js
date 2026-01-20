@@ -137,4 +137,17 @@ export class TypecastClient {
     );
     return this.handleResponse<VoiceV2Response[]>(response);
   }
+
+  /**
+   * Get a specific voice by ID with enhanced metadata (V2 API)
+   * @param voiceId - The voice ID (e.g., 'tc_62a8975e695ad26f7fb514d1')
+   * @returns Voice information with model-grouped emotions and metadata
+   */
+  async getVoiceV2(voiceId: string): Promise<VoiceV2Response> {
+    const response = await fetch(
+      this.buildUrl(`/v2/voices/${voiceId}`),
+      { headers: this.headers }
+    );
+    return this.handleResponse<VoiceV2Response>(response);
+  }
 }

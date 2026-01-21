@@ -26,7 +26,7 @@ export class TypecastClient {
     if (!response.ok) {
       let errorData: ApiErrorResponse | undefined;
       try {
-        errorData = await response.json();
+        errorData = (await response.json()) as ApiErrorResponse;
       } catch {
         // Response body is not JSON
       }
@@ -69,7 +69,7 @@ export class TypecastClient {
     if (!response.ok) {
       let errorData: ApiErrorResponse | undefined;
       try {
-        errorData = await response.json();
+        errorData = (await response.json()) as ApiErrorResponse;
       } catch {
         // Response body is not JSON
       }

@@ -1,15 +1,38 @@
-# Typecast Node.js SDK
+<div align="center">
 
-[![npm version](https://img.shields.io/npm/v/@neosapience/typecast-js.svg)](https://www.npmjs.com/package/@neosapience/typecast-js)
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D16.0.0-green.svg)](https://nodejs.org/)
+# Typecast SDK for JavaScript
 
-The official Node.js library for the [Typecast API](https://typecast.ai). Convert text to lifelike speech using AI-powered voices.
+**The official JavaScript/TypeScript SDK for the Typecast Text-to-Speech API**
 
-Works with both JavaScript and TypeScript. Full TypeScript types included.
+Convert text to lifelike speech using AI-powered voices
 
-ESM & CommonJS supported. This SDK targets Node.js environments only (browser usage is not supported).
+[![npm version](https://img.shields.io/npm/v/@neosapience/typecast-js.svg?style=flat-square)](https://www.npmjs.com/package/@neosapience/typecast-js)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg?style=flat-square)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6.svg?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D16.0.0-339933.svg?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
+
+[Documentation](https://typecast.ai/docs) | [API Reference](https://typecast.ai/docs/api-reference) | [Get API Key](https://typecast.ai/developers/api/api-key)
+
+</div>
+
+---
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Usage](#usage)
+  - [Configuration](#configuration)
+  - [Text to Speech](#text-to-speech)
+  - [Voice Discovery](#voice-discovery)
+  - [Emotion Control](#emotion-control)
+- [Supported Languages](#supported-languages)
+- [Error Handling](#error-handling)
+- [TypeScript Support](#typescript-support)
+- [License](#license)
+
+---
 
 ## Installation
 
@@ -17,29 +40,47 @@ ESM & CommonJS supported. This SDK targets Node.js environments only (browser us
 npm install @neosapience/typecast-js
 ```
 
-## Quick Start
+<details>
+<summary><strong>Node.js 16/17 Users</strong></summary>
 
-### TypeScript (ESM)
+This SDK uses the native `fetch` API. Node.js 18+ has built-in fetch support, but if you're using Node.js 16 or 17, you need to install a fetch polyfill:
+
+```bash
+npm install isomorphic-fetch
+```
+
+Then import it once at your application's entry point:
+
+```javascript
+import 'isomorphic-fetch';  // ESM
+// or
+require('isomorphic-fetch');  // CommonJS
+```
+
+</details>
+
+---
+
+## Quick Start
 
 ```typescript
 import { TypecastClient } from '@neosapience/typecast-js';
 import fs from 'fs';
 
-async function main() {
-  const client = new TypecastClient({ apiKey: 'YOUR_API_KEY' });
-  const audio = await client.textToSpeech({
-    text: "Hello there! I'm your friendly text-to-speech agent.",
-    model: "ssfm-v21",
-    voice_id: "tc_62a8975e695ad26f7fb514d1"
-  });
-  await fs.promises.writeFile(`output.${audio.format}`, Buffer.from(audio.audioData));
-  console.log(`Audio saved! Duration: ${audio.duration}s, Format: ${audio.format}`);
-}
+const client = new TypecastClient({ apiKey: 'YOUR_API_KEY' });
 
-main();
+const audio = await client.textToSpeech({
+  text: "Hello! I'm your friendly text-to-speech assistant.",
+  model: "ssfm-v30",
+  voice_id: "tc_672c5f5ce59fac2a48faeaee"
+});
+
+await fs.promises.writeFile(`output.${audio.format}`, Buffer.from(audio.audioData));
+console.log(`Saved: output.${audio.format} (${audio.duration}s)`);
 ```
 
-### JavaScript (CommonJS)
+<details>
+<summary><strong>CommonJS Example</strong></summary>
 
 ```javascript
 const { TypecastClient } = require('@neosapience/typecast-js');
@@ -48,182 +89,240 @@ const fs = require('fs');
 async function main() {
   const client = new TypecastClient({ apiKey: 'YOUR_API_KEY' });
   const audio = await client.textToSpeech({
-    text: "Hello there! I'm your friendly text-to-speech agent.",
-    model: "ssfm-v21",
-    voice_id: "tc_62a8975e695ad26f7fb514d1"
+    text: "Hello! I'm your friendly text-to-speech assistant.",
+    model: "ssfm-v30",
+    voice_id: "tc_672c5f5ce59fac2a48faeaee"
   });
   await fs.promises.writeFile(`output.${audio.format}`, Buffer.from(audio.audioData));
-  console.log(`Audio saved! Duration: ${audio.duration}s, Format: ${audio.format}`);
 }
 
 main();
 ```
 
+</details>
+
+---
+
 ## Features
 
-- 🎙️ **Multiple Voice Models**: Support for AI voice models with natural speech synthesis
-- 🌍 **Multi-language Support**: 27+ languages including English, Korean, Spanish, Japanese, Chinese, and more
-- 😊 **Emotion Control**: Adjust emotional expression (happy, sad, angry, normal, tonemid, toneup) with intensity control
-- 🎚️ **Audio Customization**: Control volume (0-200), pitch (-12 to +12 semitones), tempo (0.5x to 2.0x), and format (WAV/MP3)
-- 🔍 **Voice Discovery**: List and search available voices by model
-- 📝 **TypeScript Support**: Full type definitions included
+| Feature | Description |
+|---------|-------------|
+| **Multiple Models** | Support for `ssfm-v21` and `ssfm-v30` AI voice models |
+| **37 Languages** | English, Korean, Japanese, Chinese, Spanish, and 32 more |
+| **Emotion Control** | Preset emotions or smart context-aware inference |
+| **Audio Customization** | Volume, pitch, tempo, and format (WAV/MP3) |
+| **Voice Discovery** | Filter voices by model, gender, age, and use cases |
+| **TypeScript** | Full type definitions included |
+| **Zero Dependencies** | Uses native `fetch` API |
 
-## Configuration
+---
 
-Set your API key via environment variable or constructor:
+## Usage
+
+### Configuration
 
 ```typescript
-// Using environment variable
-// export TYPECAST_API_KEY="your-api-key-here"
-const client = new TypecastClient({
-  apiKey: process.env.TYPECAST_API_KEY!
-});
+import { TypecastClient } from '@neosapience/typecast-js';
+
+// Using environment variable (recommended)
+// export TYPECAST_API_KEY="your-api-key"
+const client = new TypecastClient();
 
 // Or pass directly
 const client = new TypecastClient({
-  apiKey: 'your-api-key-here'
+  apiKey: 'your-api-key',
+  baseHost: 'https://api.typecast.ai'  // optional
 });
 ```
 
-## Advanced Usage
+### Text to Speech
 
-### Emotion and Audio Control
-
-Control emotion, volume, pitch, tempo, and output format:
+#### Basic Usage
 
 ```typescript
 const audio = await client.textToSpeech({
-  text: "I am so excited to show you these features!",
-  voice_id: "tc_62a8975e695ad26f7fb514d1",
-  model: "ssfm-v21",
-  language: "eng",
-  prompt: {
-    emotion_preset: "happy",      // Options: normal, happy, sad, angry, tonemid, toneup
-    emotion_intensity: 1.5        // Range: 0.0 to 2.0
-  },
-  output: {
-    volume: 120,                  // Range: 0 to 200
-    audio_pitch: 2,               // Range: -12 to +12 semitones
-    audio_tempo: 1.2,             // Range: 0.5x to 2.0x
-    audio_format: "mp3"           // Options: wav, mp3
-  },
-  seed: 42                        // For reproducible results
+  text: "Hello, world!",
+  voice_id: "tc_672c5f5ce59fac2a48faeaee",
+  model: "ssfm-v30"
 });
+```
 
-await fs.promises.writeFile(`output.${audio.format}`, Buffer.from(audio.audioData));
-console.log(`Duration: ${audio.duration}s, Format: ${audio.format}`);
+#### With Audio Options
+
+```typescript
+const audio = await client.textToSpeech({
+  text: "Hello, world!",
+  voice_id: "tc_672c5f5ce59fac2a48faeaee",
+  model: "ssfm-v30",
+  language: "eng",
+  output: {
+    volume: 120,        // 0-200 (default: 100)
+    audio_pitch: 2,     // -12 to +12 semitones
+    audio_tempo: 1.2,   // 0.5x to 2.0x
+    audio_format: "mp3" // "wav" or "mp3"
+  },
+  seed: 42  // for reproducible results
+});
 ```
 
 ### Voice Discovery
 
-List and search available voices:
-
 ```typescript
-// List all voices
-const voices = await client.getVoices();
+// Get all voices (V2 API - recommended)
+const voices = await client.getVoicesV2();
 
-// Filter by model
-const v21Voices = await client.getVoices("ssfm-v21");
-
-// Get specific voice
-const voiceInfo = await client.getVoiceById("tc_62a8975e695ad26f7fb514d1");
-console.log(`Voice: ${voiceInfo[0].voice_name}`);
-console.log(`Available emotions: ${voiceInfo[0].emotions.join(', ')}`);
-```
-
-### Multilingual Content
-
-The SDK supports 27+ languages with automatic language detection:
-
-```typescript
-// Auto-detect language (recommended)
-const audio = await client.textToSpeech({
-  text: "こんにちは。お元気ですか。",
-  voice_id: "tc_62a8975e695ad26f7fb514d1",
-  model: "ssfm-v21"
+// Filter by criteria
+const filtered = await client.getVoicesV2({
+  model: 'ssfm-v30',
+  gender: 'female',
+  age: 'young_adult'
 });
 
-// Or specify language explicitly
-const koreanAudio = await client.textToSpeech({
-  text: "안녕하세요. 반갑습니다.",
+// Display voice info
+console.log(`Name: ${voices[0].voice_name}`);
+console.log(`Gender: ${voices[0].gender}, Age: ${voices[0].age}`);
+console.log(`Models: ${voices[0].models.map(m => m.version).join(', ')}`);
+```
+
+### Emotion Control
+
+#### ssfm-v21: Basic Emotion
+
+```typescript
+const audio = await client.textToSpeech({
+  text: "I'm so excited!",
   voice_id: "tc_62a8975e695ad26f7fb514d1",
   model: "ssfm-v21",
-  language: "kor"  // ISO 639-3 language code
+  prompt: {
+    emotion_preset: "happy",  // normal, happy, sad, angry
+    emotion_intensity: 1.5    // 0.0 to 2.0
+  }
 });
 ```
+
+#### ssfm-v30: Preset Mode
+
+```typescript
+import { PresetPrompt } from '@neosapience/typecast-js';
+
+const audio = await client.textToSpeech({
+  text: "I'm so excited!",
+  voice_id: "tc_672c5f5ce59fac2a48faeaee",
+  model: "ssfm-v30",
+  prompt: {
+    emotion_type: "preset",
+    emotion_preset: "happy",  // normal, happy, sad, angry, whisper, toneup, tonedown
+    emotion_intensity: 1.5
+  } as PresetPrompt
+});
+```
+
+#### ssfm-v30: Smart Mode (Context-Aware)
+
+```typescript
+import { SmartPrompt } from '@neosapience/typecast-js';
+
+const audio = await client.textToSpeech({
+  text: "Everything is perfect.",
+  voice_id: "tc_672c5f5ce59fac2a48faeaee",
+  model: "ssfm-v30",
+  prompt: {
+    emotion_type: "smart",
+    previous_text: "I just got the best news!",
+    next_text: "I can't wait to celebrate!"
+  } as SmartPrompt
+});
+```
+
+---
+
 ## Supported Languages
 
-The SDK supports 27 languages with automatic language detection:
+<details>
+<summary><strong>View all 37 supported languages</strong></summary>
 
-| Code | Language   | Code | Language   | Code | Language   |
-|------|------------|------|------------|------|------------|
-| eng  | English    | jpn  | Japanese   | ukr  | Ukrainian  |
-| kor  | Korean     | ell  | Greek      | ind  | Indonesian |
-| spa  | Spanish    | tam  | Tamil      | dan  | Danish     |
-| deu  | German     | tgl  | Tagalog    | swe  | Swedish    |
-| fra  | French     | fin  | Finnish    | msa  | Malay      |
-| ita  | Italian    | zho  | Chinese    | ces  | Czech      |
-| pol  | Polish     | slk  | Slovak     | por  | Portuguese |
-| nld  | Dutch      | ara  | Arabic     | bul  | Bulgarian  |
-| rus  | Russian    | hrv  | Croatian   | ron  | Romanian   |
+| Code | Language | Code | Language | Code | Language |
+|------|----------|------|----------|------|----------|
+| `eng` | English | `jpn` | Japanese | `ukr` | Ukrainian |
+| `kor` | Korean | `ell` | Greek | `ind` | Indonesian |
+| `spa` | Spanish | `tam` | Tamil | `dan` | Danish |
+| `deu` | German | `tgl` | Tagalog | `swe` | Swedish |
+| `fra` | French | `fin` | Finnish | `msa` | Malay |
+| `ita` | Italian | `zho` | Chinese | `ces` | Czech |
+| `pol` | Polish | `slk` | Slovak | `por` | Portuguese |
+| `nld` | Dutch | `ara` | Arabic | `bul` | Bulgarian |
+| `rus` | Russian | `hrv` | Croatian | `ron` | Romanian |
+| `ben` | Bengali | `hin` | Hindi | `hun` | Hungarian |
+| `nan` | Hokkien | `nor` | Norwegian | `pan` | Punjabi |
+| `tha` | Thai | `tur` | Turkish | `vie` | Vietnamese |
+| `yue` | Cantonese | | | | |
 
-If not specified, the language will be automatically detected from the input text.
+</details>
+
+```typescript
+// Auto-detect (recommended)
+const audio = await client.textToSpeech({
+  text: "こんにちは",
+  voice_id: "...",
+  model: "ssfm-v30"
+});
+
+// Explicit language
+const audio = await client.textToSpeech({
+  text: "안녕하세요",
+  voice_id: "...",
+  model: "ssfm-v30",
+  language: "kor"
+});
+```
+
+---
 
 ## Error Handling
-
-The SDK provides `TypecastAPIError` for handling API errors:
 
 ```typescript
 import { TypecastClient, TypecastAPIError } from '@neosapience/typecast-js';
 
 try {
-  const audio = await client.textToSpeech({
-    text: "Hello world",
-    voice_id: "tc_62a8975e695ad26f7fb514d1",
-    model: "ssfm-v21"
-  });
+  const audio = await client.textToSpeech({ ... });
 } catch (error) {
   if (error instanceof TypecastAPIError) {
-    // TypecastAPIError exposes: statusCode, message, response
+    console.error(`Error ${error.statusCode}: ${error.message}`);
+
+    // Handle specific errors
     switch (error.statusCode) {
-      case 401:
-        console.error('Invalid API key');
-        break;
-      case 402:
-        console.error('Insufficient credits');
-        break;
-      case 422:
-        console.error('Validation error:', error.response);
-        break;
-      default:
-        console.error(`API error (${error.statusCode}):`, error.message);
+      case 401: // Invalid API key
+      case 402: // Insufficient credits
+      case 422: // Validation error
+      case 429: // Rate limit exceeded
     }
-  } else {
-    console.error('Unexpected error:', error);
   }
 }
 ```
 
+---
+
 ## TypeScript Support
 
-This SDK is written in TypeScript and provides full type definitions:
+Full type definitions are included:
 
 ```typescript
-import type { 
-  TTSRequest, 
-  TTSResponse, 
+import type {
+  TTSRequest,
+  TTSResponse,
+  TTSModel,
   LanguageCode,
   Prompt,
-  Output
+  PresetPrompt,
+  SmartPrompt,
+  Output,
+  VoiceV2Response,
+  VoicesV2Filter
 } from '@neosapience/typecast-js';
 ```
 
-## Documentation
-
-- [Typecast API Documentation](https://typecast.ai/docs)
-- [API Reference](https://typecast.ai/docs/api-reference)
-- [Quickstart Guide](https://typecast.ai/docs/quickstart)
+---
 
 ## License
 
-Apache-2.0 License
+[Apache-2.0](LICENSE) © [Neosapience](https://typecast.ai)

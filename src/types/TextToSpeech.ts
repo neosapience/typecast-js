@@ -1,8 +1,11 @@
-export type TTSModel = 'ssfm-v21';
+export type TTSModel = 'ssfm-v21' | 'ssfm-v30';
 
 /**
  * Language code following ISO 639-3 standard
  * Supported languages for text-to-speech conversion
+ *
+ * ssfm-v21: 27 languages
+ * ssfm-v30: 37 languages (includes all v21 languages plus additional ones)
  */
 export type LanguageCode =
   | 'eng' // English
@@ -31,15 +34,33 @@ export type LanguageCode =
   | 'ces' // Czech
   | 'por' // Portuguese
   | 'bul' // Bulgarian
-  | 'ron'; // Romanian
+  | 'ron' // Romanian
+  // ssfm-v30 additional languages
+  | 'ben' // Bengali
+  | 'hin' // Hindi
+  | 'hun' // Hungarian
+  | 'nan' // Min Nan
+  | 'nor' // Norwegian
+  | 'pan' // Punjabi
+  | 'tha' // Thai
+  | 'tur' // Turkish
+  | 'vie' // Vietnamese
+  | 'yue'; // Cantonese
 
 /**
- * Emotion and style settings for the generated speech
+ * Emotion preset types
+ * ssfm-v21: normal, happy, sad, angry
+ * ssfm-v30: normal, happy, sad, angry, whisper, toneup, tonedown
+ */
+export type EmotionPreset = 'normal' | 'happy' | 'sad' | 'angry' | 'whisper' | 'toneup' | 'tonedown';
+
+/**
+ * Emotion and style settings for ssfm-v21 model
  */
 export interface Prompt {
   /** Emotion preset for the voice (default: 'normal') */
-  emotion_preset?: 'happy' | 'sad' | 'normal' | 'angry' | 'tonemid' | 'toneup';
-  /** 
+  emotion_preset?: EmotionPreset;
+  /**
    * Emotion intensity
    * @min 0.0
    * @max 2.0
@@ -47,6 +68,45 @@ export interface Prompt {
    */
   emotion_intensity?: number;
 }
+
+/**
+ * Preset-based emotion control for ssfm-v30 model
+ * Use this when you want to specify a specific emotion preset
+ */
+export interface PresetPrompt {
+  /** Must be 'preset' for preset-based emotion control */
+  emotion_type: 'preset';
+  /** Emotion preset to apply (default: 'normal') */
+  emotion_preset?: EmotionPreset;
+  /**
+   * Emotion intensity
+   * @min 0.0
+   * @max 2.0
+   * @default 1.0
+   */
+  emotion_intensity?: number;
+}
+
+/**
+ * Context-aware emotion inference for ssfm-v30 model
+ * The model analyzes surrounding context to infer appropriate emotion
+ */
+export interface SmartPrompt {
+  /** Must be 'smart' for context-aware emotion inference */
+  emotion_type: 'smart';
+  /** Text that comes BEFORE the main text (max 2000 chars) */
+  previous_text?: string;
+  /** Text that comes AFTER the main text (max 2000 chars) */
+  next_text?: string;
+}
+
+/**
+ * Union type for all prompt types
+ * - Prompt: Basic emotion control (ssfm-v21 compatible)
+ * - PresetPrompt: Explicit preset emotion control (ssfm-v30)
+ * - SmartPrompt: Context-aware emotion inference (ssfm-v30)
+ */
+export type TTSPrompt = Prompt | PresetPrompt | SmartPrompt;
 
 /**
  * Audio output settings for controlling the final audio characteristics
@@ -96,7 +156,7 @@ export interface TTSRequest {
   /** Language code (ISO 639-3). If not provided, will be auto-detected based on text content */
   language?: LanguageCode;
   /** Emotion and style settings for the generated speech */
-  prompt?: Prompt;
+  prompt?: TTSPrompt;
   /** Audio output settings */
   output?: Output;
   /** Random seed for reproducible results (same seed + same parameters = same output) */
